@@ -1,7 +1,7 @@
 name: forms_kit
 description: >-
-  Forms for DartNative: a form controller with validate, save and reset, a
-  TextFormField on the native text field, validators, and focus traversal.
+  Flutter's Form, FormField and TextFormField for DartNative, on the native
+  text field: validators, save and reset, error text, and keyboard traversal.
 version: 0.1.0
 repository: https://github.com/edkluivert/forms_kit
 topics:
