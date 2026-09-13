@@ -187,17 +187,13 @@ FormsTheme(
 
 ## Example
 
-`example_app/` is a runnable DartNative app with a sign-up form:
+`example/` is a runnable DartNative app with a sign-up form:
 
 ```sh
-cd example_app
+cd example
 dn pub get
 dn run -d <device-id>
 ```
-
-It is not named `example/` on purpose: pub sweeps a folder of that name
-during the package's own `dn pub get`, and that nested pass bypasses the
-DartNative SDK resolution.
 
 ## Requirements
 
@@ -207,10 +203,15 @@ DartNative framework revision 80edbf105e (2026-09-08) or newer, where
 ## Development
 
 ```sh
-dn pub get          # resolves dartnative from the installed SDK
-dart test           # validators; pure Dart
-dart analyze        # with assists_kit's DartNative warnings, see analysis_options.yaml
+dn pub get --no-example   # resolves dartnative from the installed SDK
+dart test                 # validators; pure Dart
+dart analyze              # with assists_kit's DartNative warnings, see analysis_options.yaml
 ```
+
+`--no-example` matters: a plain `dn pub get` at the package root also sweeps
+`example/` with pub alone, which cannot see the SDK's packages and reports
+`dartnative_skia` as missing. The package itself still resolves; the message
+is noise. Inside `example/`, `dn pub get` and `dn run` work as in any app.
 
 Widget-level tests are not possible yet: DartNative's framework sources ship
 as API stubs, and widget testing is on DartNative's own roadmap.
