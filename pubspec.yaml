@@ -1,0 +1,21 @@
+name: forms_kit
+description: >-
+  Forms for DartNative: a form controller with validate, save and reset, a
+  TextFormField on the native text field, validators, and focus traversal.
+version: 0.1.0
+repository: https://github.com/edkluivert/forms_kit
+topics:
+  - dartnative
+  - forms
+  - validation
+
+environment:
+  sdk: ^3.11.0
+
+# `dn pub get` resolves dartnative from the installed SDK.
+dependencies:
+  dartnative: ^1.0.0
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.32.0
