@@ -162,11 +162,7 @@ class TextFormField extends FormField<String> {
              minLines: minLines,
              maxLength: maxLength,
              onChanged: onChangedHandler,
-             // Always real callbacks, never null. With null callbacks the
-             // native field takes focus through its own touch path and the
-             // keyboard flashes on every focus change (seen 2026-09-13); with
-             // callbacks registered it does not. Flutter's TextField always
-             // installs handlers too.
+             // Wrapped only when there is something to call or log.
              onTap: onTap == null && !formsKitDebug
                  ? null
                  : () {
@@ -360,11 +356,9 @@ class _TextFormFieldState extends FormFieldState<String> {
       '$_tag focus changed -> hasFocus=${_effectiveFocusNode.hasFocus}  '
       '(rebuild scheduled for after the frame)',
     );
-    // The reconciler calls this from inside UIKit's editingDidBegin /
-    // editingDidEnd. DartNative's setState is synchronous, so rebuilding
-    // here re-applies the native field's props while the first responder is
-    // still moving, and iOS reloads the keyboard: a visible flash. Rebuild
-    // after the frame instead, as the SDK asks for requestFocus.
+    // Called from inside the native editingDidBegin / editingDidEnd
+    // callback. DartNative's setState is synchronous, so rebuild after the
+    // frame instead of inside that callback, as the SDK asks for requestFocus.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       formsKitLog(
