@@ -11,16 +11,17 @@
 ///
 /// Form(
 ///   key: _formKey,
-///   autovalidateMode: AutovalidateMode.onUserInteraction,
-///   onChanged: () => setState(() => _canSubmit = _formKey.currentState!.isValid),
 ///   child: Column(children: [
 ///     TextFormField(
 ///       decoration: const InputDecoration(labelText: 'Email'),
 ///       keyboardType: TextInputType.emailAddress,
+///       autovalidateMode: AutovalidateMode.onUserInteraction,
 ///       validator: Validators.email(),
 ///       onSaved: (v) => _email = v,
 ///     ),
-///     Button(title: 'Sign in', onPressed: !_canSubmit ? null : () {
+///     Button(title: 'Sign in', onPressed: () {
+///       // validate() shows every error; the button stays enabled so a tap
+///       // on an incomplete form reveals what is missing.
 ///       if (_formKey.currentState!.validate()) {
 ///         _formKey.currentState!.save();
 ///         _signIn();
@@ -29,6 +30,9 @@
 ///   ]),
 /// )
 /// ```
+///
+/// To gate the button instead, `Form.onChanged` with `FormState.isValid`
+/// checks the values without setting any error text.
 ///
 /// `Form`, `FormState`, `FormField` and `TextFormField` are ported from the
 /// Flutter framework (BSD-3-Clause, see LICENSE) and keep its API. With formz,

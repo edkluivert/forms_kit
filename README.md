@@ -45,10 +45,14 @@ class _SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
   final _password = TextEditingController();
   String? _email;
-  bool _canSubmit = false;
 
   Future<void> _submit() async {
-    if (!_formKey.currentState!.validate()) return;   // Flutter's validate(): shows the errors
+    // Flutter's validate(): runs every validator and shows every error. The button
+    // stays enabled, so a tap on an incomplete form is what reveals the errors.
+    if (!_formKey.currentState!.validate()) {
+      _formKey.currentState!.focusFirstInvalid(); // DartNative extra, optional
+      return;
+    }
     _formKey.currentState!.save();
     await api.signIn(_email!, _password.text);
   }
@@ -60,12 +64,11 @@ class _SignInScreenState extends State<SignInScreen> {
       appBar: AppBar(title: const Text('Sign in')),
       body: Form(
         key: _formKey,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        onChanged: () => setState(() => _canSubmit = _formKey.currentState!.isValid),
         child: ListView(padding: const EdgeInsets.all(16), children: [
           TextFormField(
             decoration: const InputDecoration(labelText: 'Email', hintText: 'you@example.com'),
             keyboardType: TextInputType.emailAddress,
+            autovalidateMode: AutovalidateMode.onUserInteraction, // re-checks as you type
             validator: Validators.compose([Validators.required(), Validators.email()]),
             onSaved: (v) => _email = v,
           ),
@@ -74,13 +77,14 @@ class _SignInScreenState extends State<SignInScreen> {
             controller: _password,
             decoration: const InputDecoration(labelText: 'Password'),
             obscureText: true,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: Validators.minLength(8),
           ),
           const SizedBox(height: 24),
           Button(
             title: 'Sign in',
             variant: ButtonVariant.filled,
-            onPressed: _canSubmit ? _submit : null,   // any DartNative Button; the form is reached through the key
+            onPressed: _submit,   // any DartNative Button; the form is reached through the key
           ),
         ]),
       ),
@@ -88,6 +92,20 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 }
 ```
+
+To gate the button instead, use `Form.onChanged` with `FormState.isValid`,
+which checks the values without setting any error text:
+
+```dart
+Form(
+  onChanged: () => setState(() => _canSubmit = _formKey.currentState!.isValid),
+  ...
+)
+Button(onPressed: _canSubmit ? _submit : null, ...)
+```
+
+A gated button never calls `validate()`, so a tap on an incomplete form shows
+nothing; the example keeps the button enabled for that reason.
 
 ## With formz, bloc, or your own state
 
@@ -187,7 +205,11 @@ FormsTheme(
 
 ## Example
 
-`example/` is a runnable DartNative app with a sign-up form:
+`example/` is a runnable DartNative app with a sign-up form: submit on an
+empty form to see every error at once and the first bad field take focus,
+a password eye toggle, a fake server rejection delivered through
+`forceErrorText`, and an app-bar menu that swaps the field look between
+platform, iOS, Material and a brand theme.
 
 ```sh
 cd example
