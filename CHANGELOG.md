@@ -1,3 +1,12 @@
+## 0.1.3
+
+- Demo video of the sign-up showcase (`doc/demo.gif`, `doc/demo.mp4`) in the
+  README: empty-submit errors, keyboard traversal, a server rejection through
+  `forceErrorText`, and the successful save.
+- Verified against the DartNative 2026-09-17 preview. The keyboard action key
+  now reaches `onFieldSubmitted`, so `textInputAction: next` walks to the next
+  field and `done` dismisses the keyboard as documented.
+
 ## 0.1.0
 
 Initial release: Flutter's form API on DartNative's native text field.
