@@ -4,7 +4,7 @@ Flutter's `Form`, `TextFormField` and `FormField<T>` for
 [DartNative](https://dartnative.com), on the native text field.
 
 <p align="center">
-  <img src="doc/demo.gif" width="360" alt="forms_kit: submitting an empty sign-up form shows every error, the fields fill in, a server rejection lands on the email field through forceErrorText, and the corrected form saves" />
+  <img src="https://raw.githubusercontent.com/edkluivert/forms_kit/main/doc/demo.gif" width="360" alt="forms_kit: submitting an empty sign-up form shows every error, the fields fill in, a server rejection lands on the email field through forceErrorText, and the corrected form saves" />
 </p>
 
 

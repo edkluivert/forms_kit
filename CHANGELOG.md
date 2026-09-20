@@ -1,3 +1,8 @@
+## 0.1.4
+
+- README demo now loads on dartpub.dev: the image is referenced by its GitHub
+  URL, since relative paths are not resolved there.
+
 ## 0.1.3
 
 - Demo video of the sign-up showcase (`doc/demo.gif`, `doc/demo.mp4`) in the
